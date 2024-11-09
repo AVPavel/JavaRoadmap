@@ -1,0 +1,42 @@
+ry {
+            // Define the URL
+            URL url = new URL("https://jsonplaceholder.typicode.com/posts/1");
+
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set the request method to GET
+            connection.setRequestMethod("GET");
+
+            // Set request headers, if needed (optional)
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            // Get the response code (e.g., 200 for OK)
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            // Read the response
+            if (responseCode == HttpURLConnection.HTTP_OK) { // success
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+
+                // Print the response content
+                System.out.println("Response Content: " + content.toString());
+
+                // Close input stream
+                in.close();
+            } else {
+                System.out.println("GET request failed.");
+            }
+
+            // Disconnect the connection
+            connection.disconnect();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }

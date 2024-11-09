@@ -1,0 +1,33 @@
+
+import java.io.*;
+import java.util.zip.*;
+
+public class GZIPExample {
+    public static void main(String[] args) {
+        // Compress
+        try (FileInputStream fis = new FileInputStream("example.txt");
+             GZIPOutputStream gos = new GZIPOutputStream(new FileOutputStream("example.txt.gz"))) {
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) > 0) {
+                gos.write(buffer, 0, len); // Compresses the data from example.txt
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Decompress
+        try (GZIPInputStream gis = new GZIPInputStream(new FileInputStream("example.txt.gz"));
+             FileOutputStream fos = new FileOutputStream("decompressed_example.txt")) {
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = gis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len); // Decompresses to decompressed_example.txt
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
